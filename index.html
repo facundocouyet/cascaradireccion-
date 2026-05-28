@@ -3450,7 +3450,7 @@ html, body {
         <div class="hcard-inner">
           <div class="hcard-tag">Card 03 · Documentación</div>
           <div class="hcard-head">
-            <div class="hcard-title">Las 6<em>presentaciones.</em></div>
+            <div class="hcard-title">Las 7<em>presentaciones.</em></div>
             <div class="hcard-lead">Acceso a las planificaciones presentadas de cada departamento del Q. Pensadas para consultar cuando necesites contexto del resto del equipo.</div>
           </div>
 
@@ -3461,6 +3461,7 @@ html, body {
             <div class="preso-mini" onclick="event.stopPropagation(); openPreso('comercial');"><span class="num">04</span>Comercial</div>
             <div class="preso-mini" onclick="event.stopPropagation(); openPreso('operaciones');"><span class="num">05</span>Operaciones</div>
             <div class="preso-mini" onclick="event.stopPropagation(); openPreso('admin');"><span class="num">06</span>Admin &amp; Finanzas</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('capital');"><span class="num">07</span>Capital Humano</div>
           </div>
 
           <div class="hcard-cta inverted">
@@ -4112,6 +4113,7 @@ html, body {
               <option>Comercial</option>
               <option>Operaciones</option>
               <option>Admin & Finanzas</option>
+              <option>Capital Humano</option>
             </select>
           </div>
           <div class="f-field">
@@ -4521,7 +4523,7 @@ html, body {
     <div class="presos-head">
       <div class="presos-head-left">
         <div class="presos-eyebrow">Departamentos · Planes del Q2 · 2026</div>
-        <div class="presos-title">Las 6<br/><em>presentaciones.</em></div>
+        <div class="presos-title">Las 7<br/><em>presentaciones.</em></div>
         <div class="presos-lead">Cada departamento presentó su plan trimestral con responsabilidades, KPIs y articulación con el resto del equipo. Acá podés ver todas.</div>
       </div>
       <button class="ext-back" onclick="goTo('home')">← Volver al home</button>
@@ -4612,6 +4614,21 @@ html, body {
         <div>
           <div class="preso-name">Admin & Finanzas</div>
           <div class="preso-director">Facu Couyet · Interino</div>
+        </div>
+        <div class="preso-cta">
+          <span>Ver presentación</span>
+          <span class="preso-cta-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="preso-card" onclick="openPreso('capital')">
+        <div class="preso-card-head">
+          <span class="preso-num">07</span>
+          <span class="preso-status ready">Presentada</span>
+        </div>
+        <div>
+          <div class="preso-name">Capital Humano</div>
+          <div class="preso-director">Facundo Couyet · CEO</div>
         </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
@@ -4990,6 +5007,7 @@ const PRESENTACIONES = {
   comercial:   { area: 'Comercial',   director: 'Francisca · Facu (interino)', slides: 12 },
   operaciones: { area: 'Operaciones', director: 'Mateo Pizarro · COO', slides: 12 },
   admin:       { area: 'Admin & Finanzas', director: 'Facu (interino)', slides: 11 },
+  capital:     { area: 'Capital Humano', director: 'Facundo Couyet · CEO', slides: 11 },
 };
 
 let currentBlobUrl = null;
@@ -10699,6 +10717,971 @@ show(0);
 </body>
 </html>
 
+</script>
+
+
+<script type="text/html" id="preso-capital">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cáscara · Capital Humano · Q3 2026</title>
+<style>
+:root {
+  --cream: #DBD8D3;
+  --cream-soft: #E6E3DE;
+  --cream-softer: #EEEBE6;
+  --ink: #0A0A0C;
+  --ink-soft: #1C1C1F;
+  --ink-muted: #6B6B70;
+  --blue: #1400FF;
+  --blue-soft: #6B7AFF;
+  --blue-glow: rgba(107,122,255,0.14);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.14);
+  --font-sans: 'Helvetica Neue', Helvetica, Inter, system-ui, sans-serif;
+  --font-serif: 'Redaction', 'Times New Roman', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 6vh 7vw 10vh;
+  background: var(--cream);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide.dark { background: var(--blue); color: white; }
+.slide.dark::before {
+  content: '';
+  position: absolute;
+  top: 10%; right: -10%;
+  width: 55%; height: 70%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 65%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.slide.dark .slide-tag { color: rgba(255,255,255,0.7); }
+.slide.dark .slide-tag::before { background: rgba(255,255,255,0.6); }
+.slide.dark .slide-footer {
+  border-top-color: rgba(255,255,255,0.1);
+  color: rgba(219,216,211,0.45);
+}
+
+.slide-inner {
+  width: 100%; max-width: 1500px;
+  margin: 0 auto; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  position: relative; z-index: 2;
+}
+
+.bg-star {
+  position: absolute;
+  top: -8%; right: -10%;
+  width: 62vh; height: 62vh;
+  opacity: 0.07; pointer-events: none; z-index: 1;
+}
+.slide.dark .bg-star { opacity: 0.08; filter: invert(1); }
+
+.slide-tag {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--ink-muted);
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 3vh;
+}
+.slide-tag::before {
+  content: ''; width: 28px; height: 1px;
+  background: var(--blue); flex-shrink: 0;
+}
+
+.slide-footer {
+  position: absolute;
+  bottom: 3vh; left: 7vw; right: 7vw;
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-muted);
+}
+.fl { display: flex; align-items: center; gap: 10px; }
+.fl svg { width: 13px; height: 13px; }
+.fn {
+  font-family: var(--font-serif); font-style: italic;
+  text-transform: none; letter-spacing: 0.04em; font-size: 14px;
+}
+
+
+/* Granulado fino global - textura sobre todas las slides */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 4;
+}
+.slide.dark::after,
+.slide.blue::after {
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.cover-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 5vw; align-items: center;
+}
+.cover-eyebrow {
+  font-size: 12px; font-weight: 800;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--ink-muted); margin-bottom: 2vh;
+  display: flex; align-items: center; gap: 14px;
+}
+.cover-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 28px; height: 1px; background: var(--blue);
+}
+.cover-title {
+  font-size: 7.5vw; font-weight: 800;
+  line-height: 0.9; letter-spacing: -0.025em;
+}
+.cover-title em {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--blue); font-weight: 400;
+  font-size: 9.5vw; display: block;
+  line-height: 0.88; margin-top: -0.02em;
+}
+.cover-meta {
+  display: flex; flex-direction: column; gap: 18px;
+  padding-left: 28px;
+  border-left: 1px solid var(--line-strong);
+}
+.meta-row { display: flex; flex-direction: column; gap: 4px; }
+.meta-lbl {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.meta-val { font-size: 15px; color: var(--ink); }
+.meta-val em {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--ink-muted);
+}
+.meta-val.italic-blue {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--blue); font-size: 20px;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw; align-items: center;
+}
+.intro-statement {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 3.6vw; line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.intro-statement .accent { color: var(--blue); }
+.intro-body {
+  font-size: 15px; line-height: 1.65;
+  color: var(--ink-soft);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.intro-body strong { font-weight: 700; color: var(--ink); }
+
+.resp-layout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.6fr;
+  gap: 5vw; align-items: start;
+}
+.resp-left { display: flex; flex-direction: column; gap: 10px; }
+.resp-num {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 11vw; color: var(--blue);
+  line-height: 1; letter-spacing: -0.02em;
+}
+.slide.dark .resp-num { color: rgba(255,255,255,0.9); }
+
+.resp-badge {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-muted);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 2px;
+}
+.resp-badge::before {
+  content: ''; width: 14px; height: 1px; background: var(--blue);
+}
+.slide.dark .resp-badge { color: rgba(255,255,255,0.7); }
+.slide.dark .resp-badge::before { background: rgba(255,255,255,0.6); }
+
+.resp-name {
+  font-size: 2.3vw; font-weight: 800;
+  line-height: 1.0; letter-spacing: -0.02em;
+}
+.slide.dark .resp-name { color: white; }
+
+.resp-right {
+  display: flex; flex-direction: column;
+  gap: 20px; padding-top: 4px;
+}
+
+.block-lbl {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--ink-muted);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.block-lbl::before {
+  content: ''; width: 16px; height: 1px; background: var(--blue);
+}
+.slide.dark .block-lbl { color: rgba(255,255,255,0.7); }
+.slide.dark .block-lbl::before { background: rgba(255,255,255,0.6); }
+
+.block-text {
+  font-size: 14.5px; line-height: 1.65;
+  color: var(--ink-soft);
+}
+.slide.dark .block-text { color: rgba(255,255,255,0.9); }
+.block-text strong { color: var(--ink); font-weight: 700; }
+.slide.dark .block-text strong { color: white; }
+
+.measure-card {
+  background: var(--cream-soft);
+  border-radius: 12px;
+  padding: 18px 22px;
+  border: 1px solid rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.slide.dark .measure-card {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.08);
+}
+.measure-lbl {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-muted);
+  display: flex; align-items: center; gap: 10px;
+}
+.measure-lbl::before {
+  content: ''; width: 14px; height: 1px; background: var(--blue);
+}
+.slide.dark .measure-lbl { color: rgba(255,255,255,0.7); }
+.slide.dark .measure-lbl::before { background: rgba(255,255,255,0.6); }
+.measure-card ul {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.measure-card ul li {
+  font-size: 13px; line-height: 1.5;
+  color: var(--ink-soft);
+  padding-left: 16px; position: relative;
+}
+.slide.dark .measure-card ul li { color: rgba(255,255,255,0.9); }
+.measure-card ul li::before {
+  content: ''; position: absolute;
+  left: 0; top: 7px;
+  width: 5px; height: 5px;
+  border-radius: 50%; background: var(--blue);
+}
+.slide.dark .measure-card ul li::before { background: rgba(255,255,255,0.85); }
+
+.resumen-head {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 3vh;
+}
+.resumen-title {
+  font-size: 38px; font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1;
+}
+.resumen-title .accent {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--blue); font-weight: 400;
+}
+.resumen-lead {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--ink-muted); font-size: 14px;
+}
+
+.resumen-grid-7 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+.rc {
+  background: var(--cream-soft);
+  border-radius: 12px;
+  padding: 18px 16px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  border: 1px solid var(--line);
+  min-height: 0;
+}
+.rc.accent { background: var(--blue); color: white; border-color: transparent; position: relative; box-shadow: 0 8px 24px rgba(20,0,255,0.18); }
+.rc.accent::before {
+  content: '';
+  position: absolute; top: -40%; right: -20%;
+  width: 80%; height: 180%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none; filter: blur(25px);
+}
+.rc.accent > * { position: relative; z-index: 1; }
+
+.rc-num {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--blue); font-size: 26px; line-height: 1;
+}
+.rc.accent .rc-num { color: rgba(255,255,255,0.85); }
+
+.rc-name {
+  font-size: 12.5px; font-weight: 800;
+  line-height: 1.2; letter-spacing: 0.01em;
+}
+.rc-desc {
+  font-size: 11.5px; color: var(--ink-soft);
+  line-height: 1.5;
+}
+.rc.accent .rc-desc { color: rgba(255,255,255,0.85); }
+
+.rc-metric {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 11px; color: var(--blue); line-height: 1.35;
+}
+.rc.accent .rc-metric {
+  border-top-color: rgba(255,255,255,0.1);
+  color: var(--blue-soft);
+}
+
+.cierre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw; align-items: center;
+}
+.cierre-statement {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 4.4vw; line-height: 1;
+  color: var(--cream);
+}
+.cierre-statement .accent { color: rgba(255,255,255,0.7); }
+.cierre-blocks {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cierre-block {
+  padding: 18px 22px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cierre-block.highlight { background: white; border-color: transparent; }
+.cb-lbl {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(219,216,211,0.5);
+}
+.cierre-block.highlight .cb-lbl { color: rgba(20,0,255,0.65); }
+.cb-txt {
+  font-size: 14px; color: rgba(219,216,211,0.85);
+  line-height: 1.55;
+}
+.cierre-block.highlight .cb-txt { color: var(--blue); font-weight: 600; }
+
+.nav {
+  position: fixed; bottom: 18px; left: 50%;
+  transform: translateX(-50%); z-index: 20;
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(10,10,12,0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--cream);
+  padding: 8px 16px; border-radius: 999px;
+  font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 700;
+}
+.nav button {
+  background: transparent; border: none;
+  color: var(--cream); cursor: pointer;
+  font-size: 15px; padding: 2px 6px; font-weight: 700;
+}
+.nav .counter {
+  font-family: var(--font-serif); font-style: italic;
+  text-transform: none; letter-spacing: 0; font-size: 13px;
+}
+.sep-nav { width: 1px; height: 14px; background: rgba(255,255,255,0.15); }
+.jump-btn {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(219,216,211,0.5); cursor: pointer;
+  background: transparent; font-family: inherit;
+  transition: all 0.2s;
+}
+.jump-btn:hover, .jump-btn.active {
+  background: var(--blue); border-color: var(--blue);
+  color: var(--cream);
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide active">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="cover-grid">
+        <div>
+          <div class="cover-eyebrow">Cáscara · Plan Trimestral · Q2</div>
+          <div class="cover-title">Capital Humano<em>Q2.</em></div>
+        </div>
+        <div class="cover-meta">
+          <div class="meta-row">
+            <span class="meta-lbl">Período</span>
+            <span class="meta-val">Q2 · 2026</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-lbl">Líder del área</span>
+            <span class="meta-val">Facundo Couyet <em>· CEO</em></span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-lbl">Foco del área</span>
+            <span class="meta-val">Equipos · perfiles · capacitación</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-lbl">Responsabilidades del área</span>
+            <span class="meta-val italic-blue">6 frentes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">I / 11 · 01</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">I · Intro</div>
+      <div class="intro-grid">
+        <div class="intro-statement">
+          Capital Humano<br/>
+          <span class="accent">es la gente</span><br/>
+          que hace posible<br/>
+          todo lo demás.
+        </div>
+        <div class="intro-body">
+          <p>El área es responsable de <strong>las personas del ecosistema</strong>: armar los equipos que cada área necesita, reclutar los perfiles correctos, hacerles el seguimiento y capacitar la estructura para que sea cada vez más autónoma.</p>
+          <p>Ninguna estrategia funciona sin la gente correcta en el lugar correcto. Capital Humano es lo que asegura que el ecosistema tenga el equipo que necesita para crecer, y que ese equipo entienda cómo trabajamos.</p>
+          <p>Facu lidera el área. Lo legal y los contratos quedan en Admin &amp; Finanzas (con Pipi como responsable de legales); Capital Humano se enfoca en equipos, perfiles y capacitación.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">II / 11 · 02</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">II · Responsabilidad 01 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">01</div>
+          <div class="resp-name">Armado de los equipos</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              Facu define la estructura de equipos que cada área necesita para funcionar. No se trata solo de sumar gente: es entender qué perfil hace falta en cada lugar, cómo encaja en el organigrama del ecosistema y cuándo conviene incorporarlo. El armado de equipos es la base sobre la que se apoyan las demás áreas para crecer.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Al inicio del Q se define el mapa de incorporaciones: qué perfiles necesita cada área, en qué orden y con qué prioridad. Cada incorporación se coordina con el líder del área que la recibe y con Admin & Finanzas por el costo. La decisión final de estructura la toma Facu junto a los directores.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Mapa de incorporaciones del Q definido antes del fin de la semana 2.</li>
+              <li>Cada área sabe qué perfiles va a sumar y cuándo.</li>
+              <li>Incorporaciones alineadas con el presupuesto coordinado con Admin.</li>
+              <li>Cada perfil nuevo entra con un rol claro desde el día uno.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">II / 11 · 03</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">III · Responsabilidad 02 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">02</div>
+          <div class="resp-name">Reclutamiento y búsqueda de perfiles</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              Facu es el reclutador del ecosistema: lidera la búsqueda activa de talento. Define dónde buscar, filtra candidatos, entrevista y selecciona. La calidad de las personas que entran a Cáscara depende de este filtro. Reclutar bien es lo que evita problemas más adelante.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Las búsquedas se abren según el mapa de incorporaciones del Q. Cada búsqueda tiene un perfil definido (qué buscamos, qué no), un proceso de entrevistas y una decisión documentada. Facu entrevista a los finalistas junto al líder del área que va a recibir a la persona.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Cada búsqueda abierta tiene su perfil escrito antes de empezar.</li>
+              <li>Tiempo de cobertura de cada búsqueda dentro de lo esperado.</li>
+              <li>Finalistas entrevistados junto al líder del área.</li>
+              <li>Decisión de incorporación documentada con el motivo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">III / 11 · 04</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">IV · Responsabilidad 03 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">03</div>
+          <div class="resp-name">Seguimiento de los perfiles</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              El trabajo de Capital Humano no termina cuando la persona entra. Facu hace el seguimiento de los perfiles: cómo se está adaptando cada persona, si está rindiendo en su rol, si necesita apoyo o ajustes. Es la mirada transversal sobre cómo está la gente del ecosistema, más allá del área en la que trabaja.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Seguimiento periódico del estado de cada perfil, en coordinación con los líderes de área. Detectar a tiempo si alguien no encaja, si necesita capacitación, o si hay que reubicarlo. Las señales se conversan con el líder del área antes de que se vuelvan un problema.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Estado de cada perfil revisado al menos una vez por Q.</li>
+              <li>Señales de desajuste detectadas y conversadas a tiempo.</li>
+              <li>Retención de los perfiles clave del ecosistema.</li>
+              <li>Cada líder de área tiene una lectura clara de su equipo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">IV / 11 · 05</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">V · Responsabilidad 04 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">04</div>
+          <div class="resp-name">Capacitación de la estructura</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              Facu es el capacitador de la estructura: se asegura de que las personas del ecosistema tengan las herramientas, los marcos y el contexto para hacer bien su trabajo. No es dar cursos: es transmitir la forma de trabajar de Cáscara, los marcos mentales y la cultura, para que la estructura sea cada vez más autónoma.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Definir qué necesita aprender cada perfil para rendir mejor. Capacitaciones puntuales según la necesidad (no genéricas). Transmitir la cultura y la forma de trabajo del ecosistema a los que entran. Documentar lo que se enseña para no depender de que Facu lo repita cada vez.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Cada incorporación recibe el onboarding de cultura y forma de trabajo.</li>
+              <li>Capacitaciones puntuales según la necesidad real de cada perfil.</li>
+              <li>Material de capacitación documentado y reutilizable.</li>
+              <li>La estructura gana autonomía a lo largo del Q.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">V / 11 · 06</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">VI · Responsabilidad 05 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">05</div>
+          <div class="resp-name">Cultura y clima del ecosistema</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              Capital Humano cuida la cultura: la forma en que se trabaja, se comunica y se relaciona la gente dentro del ecosistema. Una cultura clara hace que las personas correctas se queden y las que no encajan se noten rápido. Facu es el guardián de que la cultura de Cáscara no se diluya a medida que el equipo crece.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Mantener vivos los valores y la forma de trabajo a medida que entra gente nueva. Detectar tensiones de equipo antes de que escalen. Asegurar que la comunicación entre áreas sea sana. La cultura no se declama: se sostiene en las decisiones del día a día.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Valores y forma de trabajo comunicados a todo el equipo.</li>
+              <li>Tensiones de equipo detectadas y abordadas a tiempo.</li>
+              <li>Clima general del ecosistema sano durante el Q.</li>
+              <li>Las personas nuevas entienden la cultura desde el inicio.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">VI / 11 · 07</div>
+    </div>
+  </section>
+
+  <section class="slide dark">
+    
+    <div class="slide-inner">
+      <div class="slide-tag">VII · Responsabilidad 06 de 06</div>
+      <div class="resp-layout">
+        <div class="resp-left">
+          <div class="resp-badge">Capital Humano</div>
+          <div class="resp-num">06</div>
+          <div class="resp-name">Visión del área y mejoras del Q</div>
+        </div>
+        <div class="resp-right">
+          <div>
+            <div class="block-lbl">Qué significa</div>
+            <div class="block-text">
+              Como toda área de Cáscara, Capital Humano presenta cada trimestre la visión del área (hacia dónde queremos que vaya la gestión de personas del ecosistema) y las mejoras estructurales del Q. Acá entran los proyectos de fondo: profesionalizar el reclutamiento, armar un sistema de onboarding, definir planes de carrera.
+            </div>
+          </div>
+          <div>
+            <div class="block-lbl">Qué implica en la práctica</div>
+            <div class="block-text">
+              Al inicio del Q se entrega la visión para los próximos 6-12 meses (qué tipo de área de Capital Humano queremos) y entre 1 y 3 mejoras estructurales del trimestre. Cada mejora tiene responsable y fecha. Al cierre del Q se documenta qué se implementó y qué quedó pendiente.
+            </div>
+          </div>
+          <div class="measure-card">
+            <div class="measure-lbl">Cómo se mide</div>
+            <ul>
+              <li>Visión del área documentada antes del fin de la semana 2.</li>
+              <li>Entre 1 y 3 mejoras comprometidas con responsable y fecha.</li>
+              <li>Mejoras implementadas o con avance documentado al cierre del Q.</li>
+              <li>Si una mejora no se logró, el motivo queda registrado.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span style="color:rgba(255,255,255,0.7)">Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn" style="color:rgba(255,255,255,0.75)">VII / 11 · 08</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">VIII · Resumen del área</div>
+      <div class="resumen-head">
+        <div class="resumen-title">
+          Las 6 responsabilidades<br/>
+          <span class="accent">de un vistazo.</span>
+        </div>
+        <div class="resumen-lead">Facundo Couyet · CEO · Líder de Capital Humano</div>
+      </div>
+      <div class="resumen-grid-7">
+        <div class="rc">
+          <div class="rc-num">01</div>
+          <div class="rc-name">Armado de equipos</div>
+          <div class="rc-desc">Define qué perfil necesita cada área y cuándo sumarlo.</div>
+          <div class="rc-metric">Mapa de incorporaciones · rol claro</div>
+        </div>
+        <div class="rc">
+          <div class="rc-num">02</div>
+          <div class="rc-name">Reclutamiento</div>
+          <div class="rc-desc">Búsqueda activa de talento. Filtra, entrevista y selecciona.</div>
+          <div class="rc-metric">Perfil escrito · cobertura · decisión documentada</div>
+        </div>
+        <div class="rc">
+          <div class="rc-num">03</div>
+          <div class="rc-name">Seguimiento de perfiles</div>
+          <div class="rc-desc">Cómo se adapta y rinde cada persona del ecosistema.</div>
+          <div class="rc-metric">Revisión por Q · retención · señales a tiempo</div>
+        </div>
+        <div class="rc">
+          <div class="rc-num">04</div>
+          <div class="rc-name">Capacitación</div>
+          <div class="rc-desc">Transmite herramientas, marcos y cultura a la estructura.</div>
+          <div class="rc-metric">Onboarding · material documentado · autonomía</div>
+        </div>
+        <div class="rc">
+          <div class="rc-num">05</div>
+          <div class="rc-name">Cultura y clima</div>
+          <div class="rc-desc">Cuida la forma de trabajo y las relaciones del equipo.</div>
+          <div class="rc-metric">Valores comunicados · clima sano</div>
+        </div>
+        <div class="rc">
+          <div class="rc-num">06</div>
+          <div class="rc-name">Visión y mejoras</div>
+          <div class="rc-desc">Hacia dónde va el área y qué se mejora este Q.</div>
+          <div class="rc-metric">1–3 mejoras · implementadas o documentadas</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">IX / 11 · 09</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <img class="bg-star" src="assets/stickers/star-archer.png" alt="" aria-hidden="true" />
+    <div class="slide-inner">
+      <div class="slide-tag">IX · Articulación con otras áreas</div>
+      <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:3vh;">
+        <div style="font-size:40px; font-weight:800; letter-spacing:-0.02em; line-height:1;">
+          Cómo se cruza<br/>
+          <span style="font-family:var(--font-serif); font-style:italic; color:var(--blue); font-weight:400;">con el resto.</span>
+        </div>
+        <div style="font-family:var(--font-serif); font-style:italic; color:var(--ink-muted); font-size:14px;">Capital Humano toca a todas las áreas</div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+
+        <div style="background:var(--cream-soft); border-radius:14px; padding:24px 22px; border:1px solid var(--line); display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--blue); flex-shrink:0;"></div>
+            <div style="font-size:11px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase;">Con cada área</div>
+          </div>
+          <div style="font-family:var(--font-serif); font-style:italic; font-size:18px; line-height:1.2; color:var(--ink);">Los perfiles que <span style="color:var(--blue);">cada líder necesita.</span></div>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; padding-top:12px; border-top:1px solid var(--line);">
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>Cada director define qué perfiles necesita; Facu los busca.</li>
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>Las entrevistas finales se hacen junto al líder del área.</li>
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>El seguimiento de cada perfil se conversa con su líder.</li>
+          </ul>
+        </div>
+
+        <div style="background:rgba(0,0,0,0.18); color:white; border-radius:14px; padding:24px 22px; border:1px solid rgba(0,0,0,0.2); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:flex; flex-direction:column; gap:14px; position:relative; overflow:hidden;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--blue-soft); flex-shrink:0;"></div>
+            <div style="font-size:11px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase;">Con Admin &amp; Finanzas</div>
+          </div>
+          <div style="font-family:var(--font-serif); font-style:italic; font-size:18px; line-height:1.2; color:var(--cream);">Incorporaciones <span style="color:var(--blue-soft);">y lo legal.</span></div>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.12); position:relative; z-index:1;">
+            <li style="font-size:12.5px; line-height:1.5; color:rgba(255,255,255,0.82); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue-soft); display:inline-block;"></span>Cada incorporación se coordina con Admin por el costo.</li>
+            <li style="font-size:12.5px; line-height:1.5; color:rgba(255,255,255,0.82); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue-soft); display:inline-block;"></span>Los contratos los gestiona Pipi (legales, en Admin).</li>
+            <li style="font-size:12.5px; line-height:1.5; color:rgba(255,255,255,0.82); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue-soft); display:inline-block;"></span>Capital Humano trae la persona; Admin formaliza el vínculo.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--cream-soft); border-radius:14px; padding:24px 22px; border:1px solid var(--line); display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--blue); flex-shrink:0;"></div>
+            <div style="font-size:11px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase;">Con Operaciones</div>
+          </div>
+          <div style="font-family:var(--font-serif); font-style:italic; font-size:18px; line-height:1.2; color:var(--ink);">Onboarding y <span style="color:var(--blue);">accesos.</span></div>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; padding-top:12px; border-top:1px solid var(--line);">
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>Cuando entra alguien, Operaciones le da herramientas y accesos.</li>
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>El onboarding de cultura (Facu) + el técnico (Teo) se complementan.</li>
+            <li style="font-size:12.5px; line-height:1.5; color:var(--ink-soft); padding-left:14px; position:relative;"><span style="position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--blue); display:inline-block;"></span>Los datos del equipo viven en la base que mantiene Operaciones.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span>Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn">X / 11 · 10</div>
+    </div>
+  </section>
+
+  <section class="slide dark">
+    <div class="slide-inner">
+      <div class="slide-tag">X · Cierre</div>
+      <div class="cierre-grid">
+        <div class="cierre-statement">
+          Se presenta.<br/>
+          Se revisa.<br/>
+          <span class="accent">Se cierra.</span>
+        </div>
+        <div class="cierre-blocks">
+          <div class="cierre-block">
+            <div class="cb-lbl">Apertura · junio</div>
+            <div class="cb-txt">Facu presenta el plan con foco en el armado de equipos del Q, las búsquedas abiertas y los planes de capacitación. CEO firma los compromisos.</div>
+          </div>
+          <div class="cierre-block">
+            <div class="cb-lbl">Revisión · julio</div>
+            <div class="cb-txt">Revisión del estado de las búsquedas, las incorporaciones realizadas y el seguimiento de los perfiles nuevos. Ajustes si hace falta.</div>
+          </div>
+          <div class="cierre-block highlight">
+            <div class="cb-lbl">Cierre · agosto</div>
+            <div class="cb-txt">Lectura final: equipos armados, perfiles incorporados, capacitaciones hechas. Estado de la cultura del ecosistema. Borrador del plan del Q siguiente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="fl">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M100 0 L108 92 L200 100 L108 108 L100 200 L92 108 L0 100 L92 92 Z"/></svg>
+        <span style="color:rgba(255,255,255,0.7)">Capital Humano · Q2 2026</span>
+      </div>
+      <div class="fn" style="color:rgba(255,255,255,0.75)">XI / 11 · 11</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev">←</button>
+  <span class="counter"><span id="cur">1</span> / 11</span>
+  <button id="next">→</button>
+  <div class="sep-nav"></div>
+  <button class="jump-btn active" onclick="jump(0)">Cover</button>
+  <button class="jump-btn" onclick="jump(2)">Resp.</button>
+  <button class="jump-btn" onclick="jump(8)">Resumen</button>
+  <button class="jump-btn" onclick="jump(9)">Articulación</button>
+  <button class="jump-btn" onclick="jump(10)">Cierre</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let idx = 0;
+function show(i) {
+  idx = Math.max(0, Math.min(total - 1, i));
+  slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+  document.getElementById('cur').textContent = idx + 1;
+  const btns = document.querySelectorAll('.jump-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (idx === 0) btns[0].classList.add('active');
+  else if (idx >= 2 && idx <= 7) btns[1].classList.add('active');
+  else if (idx === 8) btns[2].classList.add('active');
+  else if (idx === 9) btns[3].classList.add('active');
+  else if (idx === 10) btns[4].classList.add('active');
+}
+function jump(i) { show(i); }
+document.getElementById('prev').addEventListener('click', () => show(idx - 1));
+document.getElementById('next').addEventListener('click', () => show(idx + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') show(idx + 1);
+  if (e.key === 'ArrowLeft') show(idx - 1);
+});
+show(0);
+@@END_SCRIPT@@
+</body>
+</html>
 </script>
 
 </body>
