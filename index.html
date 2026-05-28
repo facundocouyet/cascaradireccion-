@@ -639,23 +639,23 @@ html, body {
   filter: brightness(0) invert(1);
 }
 .hs-arquero {
-  top: -8%;
-  right: -6%;
-  width: 56%;
-  opacity: 0.28;
+  top: -14%;
+  right: -12%;
+  width: 44%;
+  opacity: 0.1;
 }
 .hs-oval {
-  top: 6%;
-  right: -6%;
-  width: 58%;
+  top: -10%;
+  right: -12%;
+  width: 46%;
   transform: rotate(-6deg);
-  opacity: 0.26;
+  opacity: 0.1;
 }
 .hs-cascaragram {
-  bottom: 0%;
-  left: -4%;
-  width: 62%;
-  opacity: 0.28;
+  bottom: -10%;
+  left: -8%;
+  width: 50%;
+  opacity: 0.1;
   transform: rotate(-3deg);
 }
 
@@ -1283,6 +1283,8 @@ html, body {
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
+.s-role-card.lead .s-role-name { color: #fff; }
+.s-role-card.lead .s-role-num { color: #AEB6FF; }
 .s-role-tagline {
   font-family: var(--font-serif);
   font-style: italic;
@@ -1426,6 +1428,8 @@ html, body {
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
+.s-sector-card.accent .s-sc-name { color: #fff; }
+.s-sector-card.accent .s-sc-num { color: #AEB6FF; }
 .s-sc-lead {
   font-family: var(--font-serif);
   font-style: italic;
@@ -1551,19 +1555,21 @@ html, body {
   line-height: 1;
   margin-top: 4px;
 }
+.s-audit-card.ceo .s-ac-name { color: #fff; }
 .s-ac-role {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 16px;
   color: var(--blue);
 }
-.s-audit-card.ceo .s-ac-role { color: var(--blue-soft); }
+.s-audit-card.ceo .s-ac-role { color: #AEB6FF; }
 .s-ac-question {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 22px;
   line-height: 1.25;
 }
+.s-audit-card.ceo .s-ac-question { color: rgba(255,255,255,0.96); }
 .s-audit-card ul {
   list-style: none;
   display: flex;
@@ -1629,7 +1635,7 @@ html, body {
 .s-reu-num {
   font-family: var(--font-serif);
   font-style: italic;
-  color: var(--blue-soft);
+  color: #AEB6FF;
   font-size: 30px;
   line-height: 1;
 }
@@ -1708,7 +1714,7 @@ html, body {
   font-size: 15px;
   line-height: 1.4;
 }
-.s-reu-foot-txt .accent { color: var(--blue-soft); }
+.s-reu-foot-txt .accent { color: #AEB6FF; }
 
 .s-section-headline {
   display: flex;
@@ -1737,7 +1743,7 @@ html, body {
   text-align: right;
 }
 .s-slide.dark .s-section-title { color: var(--cream); }
-.s-slide.dark .s-section-title .accent { color: var(--blue-soft); }
+.s-slide.dark .s-section-title .accent { color: #AEB6FF; }
 .s-slide.dark .s-section-lead { color: rgba(255,255,255,0.7); }
 
 /* Estrella decorativa */
@@ -2339,10 +2345,8 @@ html, body {
 
 /* FOOTER NAV */
 .fg-footer-nav {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 16px;
-  align-items: center;
+  display: flex;
+  justify-content: center;
   padding-top: 12px;
 }
 .fg-nav-arrow {
@@ -2676,52 +2680,103 @@ html, body {
    IMPRESIÓN / PDF del formulario — documento limpio
    ============================================================ */
 @media print {
-  @page { margin: 16mm 14mm; }
-  body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 14mm 14mm; }
+  html, body {
+    background: var(--cream) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
   /* Sacar grano y glows */
   .view::after, .view::before,
   #view-login::after, #view-login::before { display: none !important; }
   /* Solo el formulario, sin chrome */
-  #view-formulario { background: #fff !important; min-height: 0 !important; }
-  .form-glass-app { padding: 0 !important; max-width: none !important; gap: 0 !important; }
+  #view-formulario { background: transparent !important; min-height: 0 !important; }
+  .form-glass-app { padding: 0 !important; max-width: none !important; gap: 0 !important; background: transparent !important; }
   .fg-topbar, .fg-nav, .fg-footer-nav, .fg-progress-card { display: none !important; }
-  .fg-header { display: block !important; padding: 0 0 8mm !important; }
+
+  /* Portada: título grande + regla azul */
+  .fg-header {
+    display: block !important;
+    padding: 0 0 6mm !important;
+    margin-bottom: 7mm !important;
+    border-bottom: 2px solid var(--blue) !important;
+  }
   .fg-lead { display: none !important; }
-  .fg-title { font-size: 30px !important; }
+  .fg-eyebrow { color: var(--blue) !important; }
+  .fg-title { font-size: 34px !important; }
+
   .fg-content {
-    background: #fff !important;
+    background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
   }
-  /* Campos como texto plano */
-  .f-input, .f-select, .f-textarea {
-    background: #fff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: 1px solid #d4d4d4 !important;
+
+  /* Labels más discretos; ocultar ayudas de formulario */
+  .f-field-label { color: #54545C !important; }
+  .f-field-label .required { display: none !important; }
+  .f-field-help { display: none !important; }
+  .f-section-status { display: none !important; }
+
+  /* Inputs y selects como líneas de documento, no cajas */
+  .f-input, .f-select {
+    background: transparent !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(20,0,255,0.3) !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
-    color: #000 !important;
+    color: var(--ink) !important;
+    padding: 3px 2px !important;
+    font-size: 13.5px !important;
+  }
+  .f-select { background-image: none !important; padding-right: 2px !important; }
+
+  /* Textareas como bloques de texto editorial con acento azul */
+  .f-textarea {
+    background: rgba(255,255,255,0.5) !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-left: 2px solid var(--blue) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: var(--ink) !important;
     overflow: visible !important;
     resize: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 7px 12px !important;
+    line-height: 1.55 !important;
+    font-size: 13px !important;
   }
-  .f-textarea { min-height: 0 !important; }
-  .f-select { background-image: none !important; padding-right: 14px !important; }
-  .f-resp-item, .f-art-card, .f-month-card, .f-mejora-card, .f-resp-item-head {
-    background: #fff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-color: #d4d4d4 !important;
+
+  /* Tarjetas de contenido como bloques sobre la crema */
+  .f-resp-item, .f-art-card, .f-month-card, .f-mejora-card {
+    background: rgba(255,255,255,0.45) !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(20,0,255,0.18) !important;
+    box-shadow: none !important;
   }
-  /* No mostrar botones de edición */
+  .f-resp-item-head {
+    background: rgba(20,0,255,0.06) !important;
+    border-bottom-color: rgba(20,0,255,0.15) !important;
+  }
+  .f-resp-item-name input { border-bottom: none !important; font-size: 16px !important; }
+
+  /* Ocultar controles de edición */
   .f-kpi-remove, .f-kpi-add, .f-resp-add { display: none !important; }
+  /* Que las filas multi-campo entren en el ancho de página */
+  .f-kpi-row { grid-template-columns: 1fr 88px 88px !important; }
+  .f-team-row { grid-template-columns: 1.2fr 1.5fr 0.8fr 0.8fr !important; }
+
   /* Cortes de página por sección/bloque */
   .f-section {
     break-inside: avoid;
     page-break-inside: avoid;
-    border-bottom: 1px solid #ddd !important;
-    padding-bottom: 7mm !important;
-    margin-bottom: 7mm !important;
+    border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+    padding-bottom: 8mm !important;
+    margin-bottom: 8mm !important;
   }
   .f-resp-item, .f-art-card, .f-month-card, .f-mejora-card {
     break-inside: avoid;
@@ -4354,21 +4409,7 @@ html, body {
 
     <!-- NAVEGACIÓN ENTRE SECCIONES -->
     <div class="fg-footer-nav">
-      <button class="fg-nav-arrow prev">
-        <span class="arrow">←</span>
-        <div class="fg-nav-text">
-          <span class="fg-nav-lbl">Anterior</span>
-          <span class="fg-nav-val">04 · Articulación</span>
-        </div>
-      </button>
       <button class="fg-save" id="fg-save-footer">Guardar borrador</button>
-      <button class="fg-nav-arrow next">
-        <div class="fg-nav-text right">
-          <span class="fg-nav-lbl">Siguiente</span>
-          <span class="fg-nav-val">06 · Mejoras del Q</span>
-        </div>
-        <span class="arrow">→</span>
-      </button>
     </div>
 
   </div>
@@ -4734,25 +4775,6 @@ goTo = function(viewName) {
   const pills = Array.from(view.querySelectorAll('.fg-pill'));
   const sections = Array.from(view.querySelectorAll('.f-section'));
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const target = document.getElementById(pill.dataset.target);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  // Nombres legibles de cada sección (num + título) para el footer
-  const sectionLabels = sections.map((s, i) => {
-    const num = String(i + 1).padStart(2, '0');
-    const title = (s.querySelector('.f-section-title') || {}).textContent || '';
-    return num + ' · ' + title.trim();
-  });
-
-  const prevBtn = view.querySelector('.fg-nav-arrow.prev');
-  const nextBtn = view.querySelector('.fg-nav-arrow.next');
-  const prevVal = prevBtn ? prevBtn.querySelector('.fg-nav-val') : null;
-  const nextVal = nextBtn ? nextBtn.querySelector('.fg-nav-val') : null;
-
   function currentIndex() {
     let idx = 0;
     sections.forEach((s, i) => { if (s.getBoundingClientRect().top <= 120) idx = i; });
@@ -4763,19 +4785,6 @@ goTo = function(viewName) {
     pills.forEach(p => p.classList.toggle('active', p.dataset.target === id));
   }
 
-  function syncFooter(idx) {
-    if (prevBtn) {
-      const has = idx > 0;
-      prevBtn.style.visibility = has ? 'visible' : 'hidden';
-      if (prevVal && has) prevVal.textContent = sectionLabels[idx - 1];
-    }
-    if (nextBtn) {
-      const has = idx < sections.length - 1;
-      nextBtn.style.visibility = has ? 'visible' : 'hidden';
-      if (nextVal && has) nextVal.textContent = sectionLabels[idx + 1];
-    }
-  }
-
   pills.forEach(pill => {
     pill.addEventListener('click', () => {
       const target = document.getElementById(pill.dataset.target);
@@ -4783,30 +4792,16 @@ goTo = function(viewName) {
     });
   });
 
-  // Scroll-spy: resalta la pill de la sección visible y sincroniza el footer
+  // Scroll-spy: resalta la pill de la sección visible
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (!view.classList.contains('active') || ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      const idx = currentIndex();
-      setActivePill(sections[idx].id);
-      syncFooter(idx);
+      setActivePill(sections[currentIndex()].id);
       ticking = false;
     });
   }, { passive: true });
-
-  if (prevBtn) prevBtn.addEventListener('click', () => {
-    const i = Math.max(0, currentIndex() - 1);
-    sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-  if (nextBtn) nextBtn.addEventListener('click', () => {
-    const i = Math.min(sections.length - 1, currentIndex() + 1);
-    sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  // Estado inicial del footer
-  syncFooter(0);
 })();
 
 // ============================================================
