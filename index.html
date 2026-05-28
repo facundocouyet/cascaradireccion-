@@ -954,11 +954,12 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.15s;
   position: relative;
   z-index: 2;
+  cursor: pointer;
 }
-.preso-mini:hover { background: rgba(0,0,0,0.25); }
+.preso-mini:hover { background: rgba(0,0,0,0.32); transform: translateX(3px); }
 .preso-mini .num {
   font-family: var(--font-serif);
   font-style: italic;
@@ -1250,7 +1251,7 @@ html, body {
   gap: 14px;
   border: 1px solid var(--line);
 }
-.s-role-card.lead { background: var(--cream-soft); border: 1px solid var(--line); }
+.s-role-card.lead { background: var(--blue); border: 1px solid var(--blue); position: relative; overflow: hidden; }
 .s-role-card.lead::before {
   content: '';
   position: absolute;
@@ -1401,7 +1402,7 @@ html, body {
   border: 1px solid var(--line);
   min-height: 380px;
 }
-.s-sector-card.accent { background: var(--cream-soft); border: 1px solid var(--line); }
+.s-sector-card.accent { background: var(--blue); border: 1px solid var(--blue); position: relative; overflow: hidden; }
 .s-sector-card.accent::before {
   content: '';
   position: absolute;
@@ -1516,7 +1517,7 @@ html, body {
   gap: 18px;
 }
 .s-audit-card.coo { background: var(--cream-soft); border: 1px solid var(--line); }
-.s-audit-card.ceo { background: var(--cream-soft); border: 1px solid var(--line); }
+.s-audit-card.ceo { background: var(--blue); border: 1px solid var(--blue); position: relative; overflow: hidden; }
 .s-audit-card.ceo::before {
   content: '';
   position: absolute;
@@ -3073,12 +3074,12 @@ html, body {
           </div>
 
           <div class="presos-mini-list">
-            <div class="preso-mini"><span class="num">01</span>Creatividad</div>
-            <div class="preso-mini"><span class="num">02</span>Contenido</div>
-            <div class="preso-mini"><span class="num">03</span>Growth &amp; Marketing</div>
-            <div class="preso-mini"><span class="num">04</span>Comercial</div>
-            <div class="preso-mini"><span class="num">05</span>Operaciones</div>
-            <div class="preso-mini"><span class="num">06</span>Admin &amp; Finanzas</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('creatividad');"><span class="num">01</span>Creatividad</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('contenido');"><span class="num">02</span>Contenido</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('marketing');"><span class="num">03</span>Growth &amp; Marketing</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('comercial');"><span class="num">04</span>Comercial</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('operaciones');"><span class="num">05</span>Operaciones</div>
+            <div class="preso-mini" onclick="event.stopPropagation(); openPreso('admin');"><span class="num">06</span>Admin &amp; Finanzas</div>
           </div>
 
           <div class="hcard-cta inverted">
@@ -3154,12 +3155,12 @@ html, body {
             <div style="font-size:12px; color:var(--ink-soft); line-height:1.55;">El precall que ya leyeron. Contexto teórico de por qué planificamos así.</div>
             <div style="margin-top:auto; padding-top:12px; border-top:1px solid var(--line); font-family:var(--font-serif); font-style:italic; font-size:11px; color:var(--blue);">Anexo · documento aparte</div>
           </div>
-          <div style="background:var(--cream-soft); border:1px solid var(--line); border-radius:14px; padding:22px 20px; min-height:240px; display:flex; flex-direction:column; gap:12px; position:relative;">
-            
-            <div style="position:relative; z-index:1; font-family:var(--font-serif); font-style:italic; color:var(--blue-soft); font-size:32px; line-height:1;">02</div>
-            <div style="position:relative; z-index:1; font-size:13px; font-weight:800; line-height:1.2;">El sistema</div>
-            <div style="position:relative; z-index:1; font-size:12px; color:rgba(219,216,211,0.78); line-height:1.55;">Esto que están viendo. Cómo funciona el sistema, qué hace cada rol.</div>
-            <div style="position:relative; z-index:1; margin-top:auto; padding-top:12px; border-top:1px solid rgba(0,0,0,0.05); font-family:var(--font-serif); font-style:italic; font-size:11px; color:var(--blue-soft);">Estás acá</div>
+          <div style="background:var(--blue); border:1px solid var(--blue); border-radius:14px; padding:22px 20px; min-height:240px; display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden;">
+
+            <div style="position:relative; z-index:1; font-family:var(--font-serif); font-style:italic; color:rgba(255,255,255,0.92); font-size:32px; line-height:1;">02</div>
+            <div style="position:relative; z-index:1; font-size:13px; font-weight:800; line-height:1.2; color:white;">El sistema</div>
+            <div style="position:relative; z-index:1; font-size:12px; color:rgba(255,255,255,0.85); line-height:1.55;">Esto que están viendo. Cómo funciona el sistema, qué hace cada rol.</div>
+            <div style="position:relative; z-index:1; margin-top:auto; padding-top:12px; border-top:1px solid rgba(255,255,255,0.2); font-family:var(--font-serif); font-style:italic; font-size:11px; color:rgba(255,255,255,0.92);">Estás acá</div>
           </div>
           <div style="background:var(--cream-soft); border-radius:14px; padding:22px 20px; border:1px solid var(--line); min-height:240px; display:flex; flex-direction:column; gap:12px;">
             <div style="font-family:var(--font-serif); font-style:italic; color:var(--blue); font-size:32px; line-height:1;">03</div>
@@ -3436,8 +3437,8 @@ html, body {
             <div class="s-reu-name">Apertura del Q</div>
             <div class="s-reu-sub">Mes 1 · 1:1 con cada director</div>
             <div style="padding-top:12px; border-top:1px solid rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:6px;">
-              <span style="font-size:9px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase; color:rgba(219,216,211,0.5);">Participan</span>
-              <span style="font-size:12.5px; color:var(--ink-soft);">Director · CEO · COO</span>
+              <span style="font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.6);">Participan</span>
+              <span style="font-size:12.5px; color:rgba(255,255,255,0.92);">Director · CEO · COO</span>
             </div>
             <ul>
               <li>El director presenta su plan del Q.</li>
@@ -3452,9 +3453,9 @@ html, body {
             </div>
             <div class="s-reu-name">Weekly All Areas</div>
             <div class="s-reu-sub">Gestión semanal del día a día</div>
-            <div style="padding-top:12px; border-top:1px solid rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:6px;">
-              <span style="font-size:9px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-muted);">Participan</span>
-              <span style="font-size:12.5px; color:var(--ink);">Equipos de las áreas</span>
+            <div style="padding-top:12px; border-top:1px solid rgba(255,255,255,0.2); display:flex; flex-direction:column; gap:6px;">
+              <span style="font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.7);">Participan</span>
+              <span style="font-size:12.5px; color:white;">Equipos de las áreas</span>
             </div>
             <ul>
               <li>Estado real del trabajo de la semana.</li>
@@ -3470,8 +3471,8 @@ html, body {
             <div class="s-reu-name">Cierre del Q</div>
             <div class="s-reu-sub">Mes 3 · 1:1 con cada director</div>
             <div style="padding-top:12px; border-top:1px solid rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:6px;">
-              <span style="font-size:9px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase; color:rgba(219,216,211,0.5);">Participan</span>
-              <span style="font-size:12.5px; color:var(--ink-soft);">Director · CEO · COO</span>
+              <span style="font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.6);">Participan</span>
+              <span style="font-size:12.5px; color:rgba(255,255,255,0.92);">Director · CEO · COO</span>
             </div>
             <ul>
               <li>Lectura final de KPIs y compromisos.</li>
@@ -4170,10 +4171,6 @@ html, body {
           <div class="preso-name">Creatividad</div>
           <div class="preso-director">Juana Tempesta · Directora Creativa</div>
         </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>6</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>11</strong></div>
-        </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
           <span class="preso-cta-arrow">→</span>
@@ -4188,10 +4185,6 @@ html, body {
         <div>
           <div class="preso-name">Contenido</div>
           <div class="preso-director">Federico Cristofari · Director de Contenido</div>
-        </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>6</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>11</strong></div>
         </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
@@ -4208,10 +4201,6 @@ html, body {
           <div class="preso-name">Growth & Marketing</div>
           <div class="preso-director">Franco Dato · Growth Partner + Marketing interino</div>
         </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>8</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>13</strong></div>
-        </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
           <span class="preso-cta-arrow">→</span>
@@ -4226,10 +4215,6 @@ html, body {
         <div>
           <div class="preso-name">Comercial</div>
           <div class="preso-director">Francisca · Facu (B2B interino)</div>
-        </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>7</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>12</strong></div>
         </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
@@ -4246,10 +4231,6 @@ html, body {
           <div class="preso-name">Operaciones</div>
           <div class="preso-director">Mateo Pizarro · COO</div>
         </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>7</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>12</strong></div>
-        </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
           <span class="preso-cta-arrow">→</span>
@@ -4264,10 +4245,6 @@ html, body {
         <div>
           <div class="preso-name">Admin & Finanzas</div>
           <div class="preso-director">Facu Couyet · Interino</div>
-        </div>
-        <div class="preso-meta">
-          <div class="preso-meta-row"><span>Responsabilidades</span><strong>6</strong></div>
-          <div class="preso-meta-row"><span>Slides</span><strong>11</strong></div>
         </div>
         <div class="preso-cta">
           <span>Ver presentación</span>
@@ -4317,13 +4294,26 @@ function goToArea(area) {
 // LOGIN V2 — Hola [Nombre]
 // ============================================================
 const PEOPLE_MAP = {
-  facu:      { name: 'Facu',      preso: null,          msg: 'Mirá el plan del trimestre y revisá lo que cada área presentó.' },
-  teo:       { name: 'Teo',       preso: 'operaciones', msg: 'Vamos a tu plan de Operaciones.' },
-  fede:      { name: 'Fede',      preso: 'contenido',   msg: 'Vamos a tu plan de Contenido.' },
-  juana:     { name: 'Juana',     preso: 'creatividad', msg: 'Vamos a tu plan de Creatividad.' },
-  franco:    { name: 'Franco',    preso: 'marketing',   msg: 'Vamos a tu plan de Growth & Marketing.' },
-  francisca: { name: 'Francisca', preso: 'comercial',   msg: 'Vamos a tu plan de Comercial.' },
+  facu:      { name: 'Facu',      full: 'Facundo Couyet',     initials: 'FC', role: 'CEO',                preso: null,          msg: 'Mirá el plan del trimestre y revisá lo que cada área presentó.' },
+  teo:       { name: 'Teo',       full: 'Mateo Pizarro',      initials: 'MP', role: 'Operaciones',        preso: 'operaciones', msg: 'Vamos a tu plan de Operaciones.' },
+  fede:      { name: 'Fede',      full: 'Federico Cristofari', initials: 'FC', role: 'Contenido',          preso: 'contenido',   msg: 'Vamos a tu plan de Contenido.' },
+  juana:     { name: 'Juana',     full: 'Juana Tempesta',     initials: 'JT', role: 'Creatividad',        preso: 'creatividad', msg: 'Vamos a tu plan de Creatividad.' },
+  franco:    { name: 'Franco',    full: 'Franco Dato',        initials: 'FD', role: 'Growth & Marketing', preso: 'marketing',   msg: 'Vamos a tu plan de Growth & Marketing.' },
+  francisca: { name: 'Francisca', full: 'Francisca',          initials: 'F',  role: 'Comercial',          preso: 'comercial',   msg: 'Vamos a tu plan de Comercial.' },
 };
+
+function applyUserToHome() {
+  const p = PEOPLE_MAP[currentUser];
+  if (!p) return;
+  const greet = document.querySelector('.greet-title');
+  if (greet) greet.innerHTML = 'Hola ' + p.name + '.<em> Vamos a tu plan.</em>';
+  const tbName = document.querySelector('.tb-user-name');
+  if (tbName) tbName.textContent = p.full;
+  const tbAvatar = document.querySelector('.tb-avatar');
+  if (tbAvatar) tbAvatar.textContent = p.initials;
+  const tbRole = document.querySelector('.tb-user-role');
+  if (tbRole) tbRole.textContent = p.role;
+}
 let currentUser = null;
 
 function loginAs(userKey) {
@@ -4403,6 +4393,7 @@ const originalGoTo = goTo;
 goTo = function(viewName) {
   originalGoTo(viewName);
   if (viewName === 'sistema') sistemaShow(0);
+  if (viewName === 'home') applyUserToHome();
 };
 
 // ============================================================
