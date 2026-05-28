@@ -2672,6 +2672,63 @@ html, body {
 }
 .f-section { scroll-margin-top: 96px; }
 
+/* ============================================================
+   IMPRESIÓN / PDF del formulario — documento limpio
+   ============================================================ */
+@media print {
+  @page { margin: 16mm 14mm; }
+  body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* Sacar grano y glows */
+  .view::after, .view::before,
+  #view-login::after, #view-login::before { display: none !important; }
+  /* Solo el formulario, sin chrome */
+  #view-formulario { background: #fff !important; min-height: 0 !important; }
+  .form-glass-app { padding: 0 !important; max-width: none !important; gap: 0 !important; }
+  .fg-topbar, .fg-nav, .fg-footer-nav, .fg-progress-card { display: none !important; }
+  .fg-header { display: block !important; padding: 0 0 8mm !important; }
+  .fg-lead { display: none !important; }
+  .fg-title { font-size: 30px !important; }
+  .fg-content {
+    background: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  /* Campos como texto plano */
+  .f-input, .f-select, .f-textarea {
+    background: #fff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #d4d4d4 !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    overflow: visible !important;
+    resize: none !important;
+  }
+  .f-textarea { min-height: 0 !important; }
+  .f-select { background-image: none !important; padding-right: 14px !important; }
+  .f-resp-item, .f-art-card, .f-month-card, .f-mejora-card, .f-resp-item-head {
+    background: #fff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: #d4d4d4 !important;
+  }
+  /* No mostrar botones de edición */
+  .f-kpi-remove, .f-kpi-add, .f-resp-add { display: none !important; }
+  /* Cortes de página por sección/bloque */
+  .f-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-bottom: 1px solid #ddd !important;
+    padding-bottom: 7mm !important;
+    margin-bottom: 7mm !important;
+  }
+  .f-resp-item, .f-art-card, .f-month-card, .f-mejora-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 @media (max-width: 1024px) {
   .fg-header { grid-template-columns: 1fr; }
   .fg-topbar { flex-direction: column; align-items: stretch; }
@@ -3233,7 +3290,7 @@ html, body {
           <div class="hcard-status">
             <div class="hcard-status-row">
               <div class="hcs-info">
-                <span class="hcs-lbl">Tu plan · Contenido</span>
+                <span class="hcs-lbl" id="hcs-area-lbl">Tu plan · Contenido</span>
                 <span class="hcs-val">5 secciones <em>de 7</em> completas</span>
               </div>
               <div class="hcs-pct">65%</div>
@@ -3934,19 +3991,19 @@ html, body {
         <span>Home</span>
       </button>
       <div class="fg-meta">
-        <span class="fg-meta-pill"><span class="fg-meta-lbl">Área</span> Contenido</span>
+        <span class="fg-meta-pill"><span class="fg-meta-lbl">Área</span> <span id="fg-meta-area">Contenido</span></span>
         <span class="fg-meta-sep">·</span>
-        <span class="fg-meta-pill"><span class="fg-meta-lbl">Director</span> Fede</span>
+        <span class="fg-meta-pill"><span class="fg-meta-lbl">Director</span> <span id="fg-meta-director">Fede</span></span>
         <span class="fg-meta-sep">·</span>
         <span class="fg-meta-pill"><span class="fg-meta-lbl">Q</span> Q2 · 2026</span>
       </div>
       <div class="fg-actions">
         <div class="fg-status">
           <span class="fg-status-dot"></span>
-          <span><strong>Borrador</strong> · guardado 14:32</span>
+          <span id="fg-status-text"><strong>Borrador</strong> · sin guardar</span>
         </div>
-        <button class="fg-btn-secondary">Guardar</button>
-        <button class="fg-btn-primary">Enviar al CEO</button>
+        <button class="fg-btn-secondary" id="fg-btn-guardar">Guardar</button>
+        <button class="fg-btn-primary" id="fg-btn-enviar">Enviar al CEO</button>
       </div>
     </div>
 
@@ -3993,7 +4050,7 @@ html, body {
         <div class="f-field-row-3">
           <div class="f-field">
             <div class="f-field-label">Área <span class="required">obligatorio</span></div>
-            <select class="f-select">
+            <select class="f-select" id="f-area">
               <option>Contenido</option>
               <option>Creatividad</option>
               <option>Marketing</option>
@@ -4004,11 +4061,11 @@ html, body {
           </div>
           <div class="f-field">
             <div class="f-field-label">Director del área <span class="required">obligatorio</span></div>
-            <input type="text" class="f-input" value="Federico Cristofari" />
+            <input type="text" class="f-input" id="f-director" value="Federico Cristofari" />
           </div>
           <div class="f-field">
             <div class="f-field-label">Trimestre <span class="required">obligatorio</span></div>
-            <select class="f-select">
+            <select class="f-select" id="f-trimestre">
               <option>Q2 · 2026</option>
               <option>Q4 · Septiembre–Noviembre 2026</option>
             </select>
@@ -4017,11 +4074,11 @@ html, body {
         <div class="f-field-row">
           <div class="f-field">
             <div class="f-field-label">Fecha de presentación al CEO</div>
-            <input type="text" class="f-input" value="12/06/2026" />
+            <input type="text" class="f-input" id="f-fecha" value="12/06/2026" />
           </div>
           <div class="f-field">
             <div class="f-field-label">COO de apoyo</div>
-            <input type="text" class="f-input" value="Mateo Pizarro" />
+            <input type="text" class="f-input" id="f-coo" value="Mateo Pizarro" />
           </div>
         </div>
       </section>
@@ -4304,7 +4361,7 @@ html, body {
           <span class="fg-nav-val">04 · Articulación</span>
         </div>
       </button>
-      <button class="fg-save">Guardar borrador</button>
+      <button class="fg-save" id="fg-save-footer">Guardar borrador</button>
       <button class="fg-nav-arrow next">
         <div class="fg-nav-text right">
           <span class="fg-nav-lbl">Siguiente</span>
@@ -4563,12 +4620,12 @@ function goToArea(area) {
 // LOGIN V2 — Hola [Nombre]
 // ============================================================
 const PEOPLE_MAP = {
-  facu:      { name: 'Facu',      full: 'Facundo Couyet',     initials: 'FC', role: 'CEO',                preso: null,          msg: 'Mirá el plan del trimestre y revisá lo que cada área presentó.' },
-  teo:       { name: 'Teo',       full: 'Mateo Pizarro',      initials: 'MP', role: 'Operaciones',        preso: 'operaciones', msg: 'Vamos a tu plan de Operaciones.' },
-  fede:      { name: 'Fede',      full: 'Federico Cristofari', initials: 'FC', role: 'Contenido',          preso: 'contenido',   msg: 'Vamos a tu plan de Contenido.' },
-  juana:     { name: 'Juana',     full: 'Juana Tempesta',     initials: 'JT', role: 'Creatividad',        preso: 'creatividad', msg: 'Vamos a tu plan de Creatividad.' },
-  franco:    { name: 'Franco',    full: 'Franco Dato',        initials: 'FD', role: 'Growth & Marketing', preso: 'marketing',   msg: 'Vamos a tu plan de Growth & Marketing.' },
-  francisca: { name: 'Francisca', full: 'Francisca',          initials: 'F',  role: 'Comercial',          preso: 'comercial',   msg: 'Vamos a tu plan de Comercial.' },
+  facu:      { name: 'Facu',      full: 'Facundo Couyet',     initials: 'FC', role: 'CEO',                preso: null,          areaKey: 'admin',       area: 'Admin & Finanzas', msg: 'Mirá el plan del trimestre y revisá lo que cada área presentó.' },
+  teo:       { name: 'Teo',       full: 'Mateo Pizarro',      initials: 'MP', role: 'Operaciones',        preso: 'operaciones', areaKey: 'operaciones', area: 'Operaciones',      msg: 'Vamos a tu plan de Operaciones.' },
+  fede:      { name: 'Fede',      full: 'Federico Cristofari', initials: 'FC', role: 'Contenido',          preso: 'contenido',   areaKey: 'contenido',   area: 'Contenido',        msg: 'Vamos a tu plan de Contenido.' },
+  juana:     { name: 'Juana',     full: 'Juana Tempesta',     initials: 'JT', role: 'Creatividad',        preso: 'creatividad', areaKey: 'creatividad', area: 'Creatividad',      msg: 'Vamos a tu plan de Creatividad.' },
+  franco:    { name: 'Franco',    full: 'Franco Dato',        initials: 'FD', role: 'Growth & Marketing', preso: 'marketing',   areaKey: 'marketing',   area: 'Marketing',        msg: 'Vamos a tu plan de Growth & Marketing.' },
+  francisca: { name: 'Francisca', full: 'Francisca',          initials: 'F',  role: 'Comercial',          preso: 'comercial',   areaKey: 'comercial',   area: 'Comercial',        msg: 'Vamos a tu plan de Comercial.' },
 };
 
 function applyUserToHome() {
@@ -4582,6 +4639,8 @@ function applyUserToHome() {
   if (tbAvatar) tbAvatar.textContent = p.initials;
   const tbRole = document.querySelector('.tb-user-role');
   if (tbRole) tbRole.textContent = p.role;
+  const planLbl = document.getElementById('hcs-area-lbl');
+  if (planLbl && p.area) planLbl.textContent = 'Tu plan · ' + p.area;
 }
 let currentUser = null;
 
@@ -4663,6 +4722,7 @@ goTo = function(viewName) {
   originalGoTo(viewName);
   if (viewName === 'sistema') sistemaShow(0);
   if (viewName === 'home') applyUserToHome();
+  if (viewName === 'formulario' && typeof setupFormulario === 'function') setupFormulario();
 };
 
 // ============================================================
@@ -4747,6 +4807,182 @@ goTo = function(viewName) {
 
   // Estado inicial del footer
   syncFooter(0);
+})();
+
+// ============================================================
+// FORMULARIO — funcional: precarga por usuario, autoguardado y PDF
+// ============================================================
+(function initFormulario() {
+  const view = document.getElementById('view-formulario');
+  if (!view) return;
+
+  const STORAGE_PREFIX = 'cascara_plan_';
+  let saveTimer = null;
+  let currentAreaKey = null;
+
+  // Todos los controles editables del form, en orden de DOM (índice estable)
+  function controls() {
+    return Array.from(view.querySelectorAll('input, textarea, select'));
+  }
+
+  function storageKey(areaKey) {
+    return STORAGE_PREFIX + (areaKey || 'sin-area');
+  }
+
+  function setStatus(text) {
+    const el = document.getElementById('fg-status-text');
+    if (el) el.innerHTML = text;
+  }
+
+  function saveDraft() {
+    if (!currentAreaKey) return;
+    const values = controls().map(c => c.value);
+    const payload = { values: values, savedAt: Date.now() };
+    try {
+      localStorage.setItem(storageKey(currentAreaKey), JSON.stringify(payload));
+      const t = new Date(payload.savedAt);
+      const hh = String(t.getHours()).padStart(2, '0');
+      const mm = String(t.getMinutes()).padStart(2, '0');
+      setStatus('<strong>Borrador</strong> · guardado ' + hh + ':' + mm);
+    } catch (e) {
+      setStatus('<strong>Borrador</strong> · no se pudo guardar');
+    }
+  }
+
+  function scheduleSave() {
+    updateProgress();
+    setStatus('<strong>Borrador</strong> · guardando…');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveDraft, 600);
+  }
+
+  // Progreso real + badges por sección según campos completados
+  function updateProgress() {
+    const sections = Array.from(view.querySelectorAll('.f-section'));
+    let totalAll = 0, filledAll = 0;
+    sections.forEach(sec => {
+      const fields = Array.from(sec.querySelectorAll('input, textarea'));
+      const total = fields.length;
+      const filled = fields.filter(f => f.value.trim() !== '').length;
+      totalAll += total;
+      filledAll += filled;
+      const badge = sec.querySelector('.f-section-status');
+      if (badge) {
+        badge.classList.remove('done');
+        if (total > 0 && filled === total) { badge.textContent = 'Completo'; badge.classList.add('done'); }
+        else if (filled === 0) { badge.textContent = 'Pendiente'; }
+        else { badge.textContent = filled + ' de ' + total; }
+      }
+    });
+    const pct = totalAll ? Math.round(filledAll / totalAll * 100) : 0;
+    const fill = document.querySelector('.fg-prog-fill');
+    const pctEl = document.querySelector('.fg-prog-pct');
+    const sub = document.querySelector('.fg-prog-sub');
+    if (fill) fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (sub) sub.textContent = filledAll + ' de ' + totalAll + ' campos completos';
+  }
+
+  function loadDraft(areaKey) {
+    try {
+      const raw = localStorage.getItem(storageKey(areaKey));
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) { return null; }
+  }
+
+  function clearSampleContent() {
+    // Vacía todos los campos para empezar en blanco, dejando intactos los selects.
+    controls().forEach(c => {
+      if (c.tagName === 'SELECT') return;
+      c.value = '';
+    });
+  }
+
+  function applyIdentity(p) {
+    const areaSel = document.getElementById('f-area');
+    const director = document.getElementById('f-director');
+    const coo = document.getElementById('f-coo');
+    if (areaSel && p.area) areaSel.value = p.area;
+    if (director) director.value = p.full || '';
+    if (coo) coo.value = (currentAreaKey === 'operaciones') ? '' : 'Mateo Pizarro';
+    const metaArea = document.getElementById('fg-meta-area');
+    const metaDir = document.getElementById('fg-meta-director');
+    if (metaArea && p.area) metaArea.textContent = p.area;
+    if (metaDir) metaDir.textContent = p.name || p.full || '';
+  }
+
+  // Llamado al entrar a la vista formulario
+  window.setupFormulario = function setupFormulario() {
+    const p = PEOPLE_MAP[currentUser] || PEOPLE_MAP.fede;
+    currentAreaKey = p.areaKey || 'contenido';
+
+    const draft = loadDraft(currentAreaKey);
+    if (draft && Array.isArray(draft.values)) {
+      // Restaurar borrador guardado
+      const cs = controls();
+      draft.values.forEach((v, i) => { if (cs[i] !== undefined) cs[i].value = v; });
+      const t = new Date(draft.savedAt || Date.now());
+      const hh = String(t.getHours()).padStart(2, '0');
+      const mm = String(t.getMinutes()).padStart(2, '0');
+      setStatus('<strong>Borrador</strong> · guardado ' + hh + ':' + mm);
+    } else {
+      // Primera vez para esta área: en blanco con identidad precargada
+      clearSampleContent();
+      applyIdentity(p);
+      setStatus('<strong>Borrador</strong> · sin guardar');
+    }
+    // Sincronizar siempre los meta-pills con el usuario actual
+    const metaArea = document.getElementById('fg-meta-area');
+    const metaDir = document.getElementById('fg-meta-director');
+    if (metaArea) metaArea.textContent = p.area;
+    if (metaDir) metaDir.textContent = p.name;
+    updateProgress();
+    window.scrollTo(0, 0);
+  };
+
+  // Autoguardado en cada cambio
+  view.addEventListener('input', scheduleSave);
+  view.addEventListener('change', scheduleSave);
+
+  // Botones de guardado explícito
+  ['fg-btn-guardar', 'fg-save-footer'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener('click', () => { clearTimeout(saveTimer); saveDraft(); });
+  });
+
+  // Enviar al CEO → genera PDF (imprimir / guardar como PDF)
+  const enviarBtn = document.getElementById('fg-btn-enviar');
+  if (enviarBtn) enviarBtn.addEventListener('click', () => {
+    clearTimeout(saveTimer); saveDraft();
+    generarPDF();
+  });
+
+  function generarPDF() {
+    // Expandir textareas para que el contenido completo entre en la impresión
+    const areas = view.querySelectorAll('textarea');
+    const prevHeights = [];
+    areas.forEach((a, i) => {
+      prevHeights[i] = a.style.height;
+      a.style.height = 'auto';
+      a.style.height = a.scrollHeight + 'px';
+    });
+
+    const p = PEOPLE_MAP[currentUser] || {};
+    const prevTitle = document.title;
+    const areaLabel = (p.area || 'Area').replace(/[^a-zA-Z0-9]+/g, '-');
+    document.title = 'Plan-' + areaLabel + '-Q2-2026';
+    document.body.classList.add('printing-form');
+
+    function cleanup() {
+      document.body.classList.remove('printing-form');
+      document.title = prevTitle;
+      areas.forEach((a, i) => { a.style.height = prevHeights[i]; });
+      window.removeEventListener('afterprint', cleanup);
+    }
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(() => window.print(), 60);
+  }
 })();
 
 // ============================================================
